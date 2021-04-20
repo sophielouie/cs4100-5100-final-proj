@@ -44,7 +44,6 @@ def forward(tpm, epm, pi, observations):
     # Create probability matrix forward[N,T] - initialize with 0s
     NUM_STATES = 6
     NUM_OBSERVATIONS = len(observations)
-    print("num obs", NUM_OBSERVATIONS)
     OBSERVATIONS = observations
     alpha = []
     
@@ -63,7 +62,6 @@ def forward(tpm, epm, pi, observations):
     for time in range(1, len(OBSERVATIONS)):
         curr_time_idx = time
         prev_time_idx = curr_time_idx - 1
-        print('prev time index', prev_time_idx)
         
         for state in range(NUM_STATES):
             prev_paths_sum = 0
@@ -314,11 +312,11 @@ def viterbi(tpm, epm, pi, observations):
     
     # create path probability matrix num observations by num states
     # initialize to 0
-    path_probability_matrix = numpy.zeros((len(observations), num_states ))
+    path_probability_matrix = np.zeros((len(observations), num_states ))
 
     #create a path backpointer matrix backpointer[N, L + 2] to save indexes of states
     # initialize to 0
-    path_backpointer_maxtrix = numpy.zeros((len(observations), num_states ))
+    path_backpointer_maxtrix = np.zeros((len(observations), num_states ))
     
     max_states = np.zeros(len(observations))
     final_path=[]
@@ -366,11 +364,11 @@ def viterbi(tpm, epm, pi, observations):
             path_probability_matrix[t][s] = max(probabilities)
 
             # update back_pointer[t, s] to be argMax calculated of previous obs for given observation
-            path_backpointer_maxtrix[t][s] = numpy.argmax(backpointer_probabilities)
+            path_backpointer_maxtrix[t][s] = np.argmax(backpointer_probabilities)
             
     #grab end state probability and index 
     end_state_probability = max(path_probability_matrix[-1:])
-    end_state_index = numpy.argmax(path_probability_matrix[-1:])
+    end_state_index = np.argmax(path_probability_matrix[-1:])
 
     #go backwards through backpointer
     final_path[len(observations)-1] = end_state_index
@@ -575,7 +573,7 @@ def add_hidden_states_to_df(original_stock_df, states_path):
 # In[ ]:
 
 
-def graph_hidden_states(updated_stock_df):
+def graph_hidden_states(updated_stock_df, states_path):
     """ Graph the hidden states by date and close price
     
     Args:
@@ -589,7 +587,7 @@ def graph_hidden_states(updated_stock_df):
     states = updated_stock_df["Hidden_State"]
 
     fig, axs = plt.subplots(len(updated_stock_df.Hidden_State.unique()), sharex=True, sharey=True)
-    colours = cm.rainbow(numpy.linspace(0, 1, (len(updated_stock_df.Hidden_State.unique()))))
+    colours = cm.rainbow(np.linspace(0, 1, (len(updated_stock_df.Hidden_State.unique()))))
     for i, (ax, colour) in enumerate(zip(axs, colours)):
         # Use fancy indexing to plot data in each state.
         mask = states == i
@@ -602,7 +600,7 @@ def graph_hidden_states(updated_stock_df):
     plt.xlim(dates[0], dates[len(dates)-1])
 
     # set y-axis
-    plt.ylim(0, numpy.amax(close_v) + 10)
+    plt.ylim(np.amin(close_v) - 10, np.amax(close_v) + 10)
 
     # plt.xlim(1, 10)
     fig.set_size_inches(15, 15)
