@@ -10,7 +10,7 @@ from matplotlib import cm, pyplot as plt
 import seaborn
 from matplotlib.dates import YearLocator, MonthLocator, DayLocator
 import pandas as pd
-import numpy 
+import numpy as np
 from datetime import datetime
 
 
@@ -39,11 +39,12 @@ def forward(tpm, epm, pi, observations):
     T1  .2 .1 .1 .2 .1 .1  (PI)
         * EPM - probability of emitting whatever our first observation is 
     
-    """ 
+    """
     
     # Create probability matrix forward[N,T] - initialize with 0s
     NUM_STATES = 6
     NUM_OBSERVATIONS = len(observations)
+    print("num obs", NUM_OBSERVATIONS)
     OBSERVATIONS = observations
     alpha = []
     
@@ -62,6 +63,7 @@ def forward(tpm, epm, pi, observations):
     for time in range(1, len(OBSERVATIONS)):
         curr_time_idx = time
         prev_time_idx = curr_time_idx - 1
+        print('prev time index', prev_time_idx)
         
         for state in range(NUM_STATES):
             prev_paths_sum = 0
