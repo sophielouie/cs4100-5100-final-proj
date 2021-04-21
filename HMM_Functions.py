@@ -198,8 +198,10 @@ def baum_welch(tpm, epm, pi, emissions):
     xi = np.zeros((M, M, T - 1))
     
     # iterate until convergence
-    # while (check_convergence(tpm, A) == False and check_convergence(epm, B) == False):  
-    for i in range(10):
+    iteration = 0
+    while (check_convergence(tpm, A) == False and check_convergence(epm, B) == False): 
+        iteration += 1
+    # for i in range(10):
         alpha = forward(tpm, epm, pi, emissions)
         beta = backward(tpm, epm, pi, emissions)
         
@@ -286,6 +288,7 @@ def baum_welch(tpm, epm, pi, emissions):
                 
     #print("gamma\n", gamma)
     #print('xi\n', xi)
+    print(iteration)
     return tpm, epm
 
 
