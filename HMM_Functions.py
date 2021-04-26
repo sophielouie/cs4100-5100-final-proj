@@ -199,9 +199,9 @@ def baum_welch(tpm, epm, pi, emissions):
     
     # iterate until convergence
     iteration = 0
-    while (check_convergence(tpm, A) == False and check_convergence(epm, B) == False): 
-        iteration += 1
-    # for i in range(10):
+    #while (check_convergence(tpm, A) == False and check_convergence(epm, B) == False): 
+    #    iteration += 1
+    for i in range(10):
         alpha = forward(tpm, epm, pi, emissions)
         beta = backward(tpm, epm, pi, emissions)
         
